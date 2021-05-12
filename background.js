@@ -12,7 +12,7 @@ const accepted_incoming_headers = {
 	,'content-length': null
 	,'content-location': null
 	,'content-range': null
-	,'dontent-type': null
+	,'content-type': null
 	,'date': null
 	,'last-modified': null
 	,'location': null
@@ -68,10 +68,14 @@ async function filterIncoming(e) {
 			for (var header of e.responseHeaders) {
 				if (typeof accepted_incoming_headers[header.name.toLowerCase()] === 'string') {
 					// overwrite
+					console.debug('(inc)> changed ', header.name, header.value);
 					header.value = accepted_outgoing_headers[header.name.toLowerCase()];
+					console.debug('(inc)> changed ', header.name, header.value);
 				} else if (accepted_incoming_headers[header.name.toLowerCase()] === null) {
 					// leave as is 
+					console.debug('(inc)> unchanged ', header.name, header.value);
 				} else {
+					console.debug('(inc)> deleted ', header.name, header.value);
 					// delete
 					header.value = "";
 				}
@@ -87,13 +91,16 @@ async function filterOutgoing(e) {
 	return (new Promise((resolve, reject) => {
 		try {
 			for (var header of e.requestHeaders) {
-				//console.log(header);
+				//console.debug(header);
 				if (typeof accepted_outgoing_headers[header.name.toLowerCase()] === 'string') {
 					// overwrite
+					console.debug('(out)< changed ', header.name, header.value);
 					header.value = accepted_outgoing_headers[header.name.toLowerCase()];
 				} else if (accepted_outgoing_headers[header.name.toLowerCase()] === null) {
 					// leave as is 
+					console.debug('(out)< unchanged ', header.name, header.value);
 				} else {
+					console.debug('(out)< deleted ', header.name, header.value);
 					// delete
 					header.value = "";
 				}

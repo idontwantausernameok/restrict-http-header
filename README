@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # variables
-ID="whitelist-request-headers"
+ID="restrict-http-header"
 BRANCH="main"
 
 # check requirements
